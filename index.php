@@ -39,18 +39,10 @@ if(!file_exists($cacheFilename)) {
     $itemsFiltered = json_decode(file_get_contents($cacheFilename), true);
 }
 
-echo '<div style="max-width: 900px; margin-inline: auto;">';
-echo '<h1>Items et leurs prix : </h1>';
-
-foreach($itemsFiltered as $name => $item)
-{
-    echo '<div>';
-    echo '<p>Noms de l\'item (code, FR, EN) : ' . implode(', ', $item['locale']) . '</p>';
-    echo '<p>Prix de base de l\'item : ' . $item['economicValue'] . ' Dukes </p>';
-    echo '</div>';
-    echo '<hr>';
-}
+$items = $itemsFiltered;
 
 echo '</div>';
 
-file_put_contents($cacheFilename, json_encode($itemsFiltered));
+require_once('templates/home.php');
+
+if(!file_exists($cacheFilename)) file_put_contents($cacheFilename, json_encode($itemsFiltered));

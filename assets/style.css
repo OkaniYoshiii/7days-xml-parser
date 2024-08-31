@@ -1,0 +1,14 @@
+.size-medium {
+    max-width: min(100% - 2rem, 1000px);
+    margin-inline: auto;
+}
+
+.items {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.items > * {
+    border-bottom: 2px solid grey;
+}
