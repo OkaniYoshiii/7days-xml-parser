@@ -1,17 +1,28 @@
 <?php
 $cacheFilename = 'cache.json';
 if(!file_exists($cacheFilename)) {
-    $xml = simplexml_load_file('items.xml');
+    $tradersXml = simplexml_load_file('traders.xml');
+
+    $buyMarkup = $tradersXml['buy_markup'];
+    $sellMarkdown = $tradersXml['sell_markdown'];
+
+    $itemsXml = simplexml_load_file('items.xml');
 
     // $items = $xml->xpath('/items/item/property[@name="Tags" and contains(@value, "axe")]/..');
-    $items = $xml->xpath('/items/item/property[@name="EconomicValue"]/..');
+    $items = $itemsXml->xpath('/items/item/property[@name="EconomicValue"]/..');
     
     $itemsFiltered = [];
     foreach($items as $item)
     {
         $name = (string) $item['name'];
         $economicValue = (string) $item->xpath('property[@name="EconomicValue"]/@value')[0]['value'];
-        $itemsFiltered[$name] = ['economicValue' => $economicValue, 'locale' => ['code' => $name]];
+        $itemsFiltered[$name] = [
+            'prices' => [
+                'base' => ['label' => 'Prix de base', 'value' => $economicValue],
+                'traderSell' => ['label' => 'Prix de vente marchand', 'value' => $economicValue * $sellMarkdown],
+                'traderBuy' => ['label' => 'Prix d\'achat marchand', 'value' => $economicValue * $buyMarkup],
+            ],
+            'locale' => ['xml' => $name]];
     }
     
     $localizationResource = fopen('Localization.txt', 'r');

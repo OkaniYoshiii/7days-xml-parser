@@ -12,8 +12,18 @@
         <div class="items">
             <?php foreach($items as $item) : ?>
                 <div class="item">
-                    <p><?= 'Noms de l\'item (XML, FR, EN) : ' . implode(', ', $item['locale']) ?></p>
-                    <p><?= 'Prix de base de l\'item : ' . $item['economicValue'] . ' Dukes ' ?></p>
+                    <p>Noms : </p>
+                    <ul>
+                        <?php foreach($item['locale'] as $lang => $trad) : ?>
+                            <li><?= strtoupper($lang) . ' - ' . $trad ?></li>
+                        <?php endforeach ?>
+                    </ul>
+                    <p>Prix : </p>
+                    <ul>
+                        <?php foreach($item['prices'] as $price) : ?>
+                            <li><?= $price['label'] . ' - ' . $price['value'] . ' Dukes' ?></li>
+                        <?php endforeach ?>
+                    </ul>
                 </div>
             <?php endforeach ?>
         </div>
